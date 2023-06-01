@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> NamMQI Online Kompyuter Ustaxonasi</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.css}"/>
+    <script th:href="@{/webjars/bootstrap/5.1.0/js/bootstrap.js}"></script>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+
+    <style>
+        body {
+            /*background: linear-gradient(135deg, #71b7e6, #9b59b6);*/
+            background: url(/static/images/background.jpg);
+            background-size: cover;
+        }
+        .navbar {
+            background-color: #380c4b;
+            color: #fff;
+        }
+        .nav-link {
+            color: #fff;
+        }
+        .btn-primary {
+            background-color:#380c4b;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #1e2049;
+
+        }
+        .jumbotron {
+            /*background-image: url('https://source.unsplash.com/1600x900/?digital');*/
+
+            box-shadow: 10px 10px 5px #ccc;
+            color: #fff;
+            text-align: center;
+            height: 660px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .jumbotron h1 {
+            font-size: 65px;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+        }
+        .jumbotron p {
+            font-size: 30px;
+            margin-bottom: 40px;
+            color: white;
+            text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+        }
+        .bg-vilot{
+            background: linear-gradient(135deg, #054c7c, #380c4b)
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md bg-vilot">
+    <a class="nav-link" href="#">
+        <img src="/static/images/img.png" alt="Logo" width="60" height="54" >
+        NamMQI Onlayn Ustaxonasi
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <form class="form-inline my-2 my-lg-0">
+            <div class="d-flex">
+                <input class="form-control mr-sm-1" type="search" placeholder="Izlash" aria-label="Search">
+                <button class="btn btn-outline-success my-1 my-sm-0" type="submit">Izlash</button></div>
+
+        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Bosh Menyu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sayt haqida</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Yordam</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Jumbotron -->
+<div class="jumbotron">
+    <div class="container">
+
+        <h1 >NamMQI kompyuter Ustaxonasiga Xush kelibsiz</h1>
+        <br>
+        <p style="">Biz kompyuterga qulay va samarali onlayn xizmatlar taqdim etamiz,
+            sizning kompyuterda yuz berayotgan har qanday muammolarga yechim topishda sizga ko'maklasha olamiz.
+            Bizning xizmatlarimiz quyidagilarni  o'z ichiga oladi: virusni yo'qotish,
+            operatsion tizimlarini ta'mirlash va yangilash, internetga ulanish muammolari,
+            dasturlar bilan bog'liq muammolar, va boshqalar</p>
+
+        <br>
+        <a href="/register" class="btn btn-lg btn-primary me-3">Ro'yxatdan O'tish</a>
+        <a href="/login" class="btn btn-lg btn-outline-primary">Tizimga Kirish</a>
+    </div>
+</div>
+<footer >
+    <div class="container">
+        <div class="row">
+            <div class="fixed-bottom bg-dark text-white text-center mt-5">
+                <p>&copy;2023 NamMQI Onlayn Kompyuter Ustaxonasi.
+                    Barcha xizmatlar kafolatlangan </p>
+            </div>
+        </div>
+    </div>
+</footer>
+</footer>
+<!-- Scripts -->
+<!-- jQuery -->
+<script th:href="@{/webjars/bootstrap/5.1.0/js/bootstrap.js}"></script>
+<!-- Popper.js -->
+<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/esm/popper-lite.min.js"></script>-->
+<!-- Bootstrap JS -->
+</body>
