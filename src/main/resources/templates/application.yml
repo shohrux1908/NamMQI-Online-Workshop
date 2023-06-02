@@ -1,0 +1,7 @@
+# Spring Security sozlamalari
+spring:
+  security:
+    user:
+      name: admin
+      password: admin-password
+      roles: ADMIN

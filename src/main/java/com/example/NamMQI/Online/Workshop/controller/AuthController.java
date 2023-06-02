@@ -3,25 +3,63 @@ package com.example.NamMQI.Online.Workshop.controller;
 import com.example.NamMQI.Online.Workshop.dto.MessageDto;
 import com.example.NamMQI.Online.Workshop.dto.UserDto;
 import com.example.NamMQI.Online.Workshop.model.Admin;
+import com.example.NamMQI.Online.Workshop.model.Role;
 import com.example.NamMQI.Online.Workshop.model.User;
+import com.example.NamMQI.Online.Workshop.repository.RoleRepository;
+import com.example.NamMQI.Online.Workshop.repository.UserRepository;
 import com.example.NamMQI.Online.Workshop.service.UserService;
 
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
+
+import com.example.NamMQI.Online.Workshop.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Controller
 public class AuthController {
 
     private UserService userService;
+
+
+
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/")
+    public String home() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        User user = userServiceImpl.getUser(username);
+        Collection<Role> roles = user.getRoles();
+        User admin = userServiceImpl.getUser("admin");
+        Collection<Role> adminRoles = admin.getRoles();
+        boolean equals = adminRoles.equals(roles);
+        return equals ? "redirect:/admin" : "userpage";
+    }
+
+
 
 
 
@@ -34,10 +72,12 @@ public class AuthController {
 
 
 
-    @GetMapping("/")
-    public String home(){
-        return "index";
+
+    @GetMapping("/user_message")
+    public String message(){
+        return "user_message";
     }
+
 
     @GetMapping("/cabinet")
     public  String cabinet(){
@@ -58,10 +98,10 @@ public class AuthController {
     }
 
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String loginForm() {
+//        return "login";
+//    }
 
 
     // handler method to handle user registration request
@@ -119,11 +159,11 @@ public class AuthController {
 
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
     public String listRegisteredUsers(Model model){
         List<UserDto> users = userService.findAllUsers();
-        List<MessageDto> messages=userService.findAllMessage();
-        model.addAttribute("users", users);
+//        List<MessageDto> messages=userService.findAllMessage();
+        model.addAttribute("users", users );
+//        model.addAttribute("messages",messages );
         return "users";
     }
     @GetMapping("/message")
@@ -135,6 +175,13 @@ public class AuthController {
     }
 
 
+//    --------------------------
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable(value = "id") long id) {
+        userService.deleteById(id);
+        return "redirect:/admin";
+    }
 
 
 

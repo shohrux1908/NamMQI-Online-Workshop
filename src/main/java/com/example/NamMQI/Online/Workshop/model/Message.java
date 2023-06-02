@@ -1,7 +1,7 @@
 package com.example.NamMQI.Online.Workshop.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data

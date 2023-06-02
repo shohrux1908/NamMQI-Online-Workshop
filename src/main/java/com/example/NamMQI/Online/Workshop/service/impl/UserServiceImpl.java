@@ -13,18 +13,25 @@ import com.example.NamMQI.Online.Workshop.repository.UserRepository;
 import com.example.NamMQI.Online.Workshop.service.UserService;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
  public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepository;
 
 
@@ -107,6 +114,7 @@ import java.util.stream.Collectors;
     @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
+        System.out.println(users.toString());
         return users.stream().map((user) -> convertEntityToDto(user))
                 .collect(Collectors.toList());
     }
@@ -118,6 +126,15 @@ import java.util.stream.Collectors;
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteById(long id) {
+        this.userRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUserRole(Long user_id) {
+        userRepository.findById(user_id);
+    }
 
 
     private UserDto convertEntityToDto(User user){
@@ -125,7 +142,8 @@ import java.util.stream.Collectors;
 
         String[] name = user.getName().split(" ");
         userDto.setFirstName(name[0]);
-        userDto.setLastName(name[1]);
+        userDto.setLastName(name[0]);
+        userDto.setId(user.getId());
         userDto.setDepartment(user.getDepartment());
         userDto.setPosition(user.getPosition());
         userDto.setEmail(user.getEmail());
@@ -147,5 +165,23 @@ import java.util.stream.Collectors;
         role.setName("ROLE_ADMIN");
 //        role.setName("ROLE_USER");
         return roleRepository.save(role);
+    }
+
+    public User getUser(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user=userRepository.findByUsername(username);
+        if (user==null) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }
