@@ -30,7 +30,7 @@ public class DataLoader implements CommandLineRunner {
 
             userRepository.save(
                     new User(
-                            "Admin",
+                            "Admin","",
                             "","", "","",
                             "admin",
                             passwordEncoder.encode("111"),

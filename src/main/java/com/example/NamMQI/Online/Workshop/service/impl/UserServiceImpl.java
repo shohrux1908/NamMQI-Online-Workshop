@@ -2,14 +2,13 @@ package com.example.NamMQI.Online.Workshop.service.impl;
 
 import com.example.NamMQI.Online.Workshop.dto.MessageDto;
 import com.example.NamMQI.Online.Workshop.dto.UserDto;
-import com.example.NamMQI.Online.Workshop.model.Admin;
 import com.example.NamMQI.Online.Workshop.model.Message;
 import com.example.NamMQI.Online.Workshop.model.Role;
 import com.example.NamMQI.Online.Workshop.model.User;
-import com.example.NamMQI.Online.Workshop.repository.AdminRepository;
 import com.example.NamMQI.Online.Workshop.repository.MessageRepository;
 import com.example.NamMQI.Online.Workshop.repository.RoleRepository;
 import com.example.NamMQI.Online.Workshop.repository.UserRepository;
+import com.example.NamMQI.Online.Workshop.repository.UserRoleRepository;
 import com.example.NamMQI.Online.Workshop.service.UserService;
 
 
@@ -22,10 +21,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,17 +35,21 @@ import java.util.stream.Collectors;
     @Autowired
     private UserRepository userRepository;
 
-
+    @Autowired
+    private UserRoleRepository userRoleRepository;
     private MessageRepository messageRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
 
+
+                           UserRoleRepository userRoleRepository,
                            RoleRepository roleRepository,
                            MessageRepository messageRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userRoleRepository=userRoleRepository;
         this.roleRepository = roleRepository;
         this.messageRepository=messageRepository;
         this.passwordEncoder = passwordEncoder;
@@ -55,26 +60,19 @@ import java.util.stream.Collectors;
         User user = new User();
         user.setDepartment(userDto.getDepartment());
         user.setPosition(userDto.getPosition());
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setUsername(userDto.getUsername());
-
-
-        //encrypt the password once we integrate spring security
-//        user.setPassword(userDto.getPassword());
-         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role = roleRepository.findByName("ROLE_ADMIN");
-//        Role role1=roleRepository.findByName("ROLR_USER");
         if(role == null){
             role = checkRoleExist();
         }
-//        if (role1==null){
-//            role1=checkRoleExist();
-//        }
 
         user.setRoles(Arrays.asList(role));
-//        user.setRoles(Arrays.asList(role1));
+
         User savedUser = userRepository.save(user);
     }
 
@@ -82,17 +80,12 @@ import java.util.stream.Collectors;
 
     @Override
     public void saveMessage(MessageDto messageDto) {
+
         Message message=new Message();
+        message.setId(messageDto.getId());
         message.setTheme(messageDto.getTheme());
         message.setComplaintText(messageDto.getComplaintText());
         message.setPosition(messageDto.getPosition());
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        User username = userRepository.findByUsername(name);
-
-        message.setUser(username.getId());
-
         messageRepository.save(message);
     }
 
@@ -114,7 +107,6 @@ import java.util.stream.Collectors;
     @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
-        System.out.println(users.toString());
         return users.stream().map((user) -> convertEntityToDto(user))
                 .collect(Collectors.toList());
     }
@@ -125,10 +117,18 @@ import java.util.stream.Collectors;
         return  messages.stream().map((message -> converEntytyMessage(message)))
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     @Override
     public void deleteById(long id) {
-        this.userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElse(null);
+            if (user != null) {
+                System.out.println(user.getRoles());
+                userRepository.save(user);
+            }
+            userRoleRepository.deleteById(id);
+
+
+
     }
 
     @Override
@@ -136,13 +136,32 @@ import java.util.stream.Collectors;
         userRepository.findById(user_id);
     }
 
+    @Override
+    public User getUserById(Long id) {
+        this.userRepository.getUserById(id);
+        return null;
+    }
+
+    @Override
+    public User get(Long id) throws UserNotFoundException {
+        Optional<User> result =userRepository.findById(id);
+        if (result.isPresent()){
+            return result.get();
+        }
+        throw new UserNotFoundException("Could not find any users with ID"+id);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
 
     private UserDto convertEntityToDto(User user){
         UserDto userDto = new UserDto();
-
-        String[] name = user.getName().split(" ");
-        userDto.setFirstName(name[0]);
-        userDto.setLastName(name[0]);
+//        String[] name = user.getName().split(" ");
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
         userDto.setId(user.getId());
         userDto.setDepartment(user.getDepartment());
         userDto.setPosition(user.getPosition());
@@ -154,6 +173,7 @@ import java.util.stream.Collectors;
     }
     private MessageDto converEntytyMessage(Message message){
         MessageDto messageDto=new MessageDto();
+        messageDto.setId(message.getId());
         messageDto.setTheme(message.getTheme());
         messageDto.setComplaintText(message.getComplaintText());
         messageDto.setPosition(message.getPosition());

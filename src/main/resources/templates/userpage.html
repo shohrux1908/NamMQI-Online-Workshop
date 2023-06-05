@@ -100,8 +100,6 @@
                 </div>
             </li>
 
-            </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="#">Sozlamalar</a>
             </li>
@@ -113,13 +111,6 @@
             </li>
         </ul>
     </div>
-    <div>
-        <li>
-
-        </li>
-
-        <br>
-    </div>
 
 </nav>
 
@@ -129,17 +120,19 @@
     <div class="row d-flex justify-content-around">
         <div class="col-md-4">
             <div class="card">
-                <img class="card-img" src="/static/images/info.png" alt="Card image cap">
+                <img class="card-img-top" src="/static/images/apply.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Mening ma'lumotlarim</h5>
                     <p class="card-text">O'zingiz haqidagi ma'lumotlarni bilishingiz mumkin </p>
-                    <a href="/info" class="btn btn-primary"> O'tish </a>
+                    <form method="post" ></form>
+                    <a th:href="@{/user/info/{id}(id=${session.userId})}" class="btn btn-primary"> O'tish </a>
+<!--                    th:href="@{'/users/delete/'+${combinedData.user != null ? combinedData.user.id : ''}}"-->
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img class="card-img" src="/static/images/3.png" alt="Card image cap">
+                <img class="card-img-top" src="/static/images/userinfo.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Ariza yuborish</h5>
                     <p class="card-text">O'zingizni qiynayotgan muammolaringiz shikoyat tarziga yuborishingiz mumkin</p>
@@ -149,9 +142,19 @@
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img class="card-img" src="/static/images/4.png" alt="Card image cap">
+                <img class="card-img-top" src="/static/images/Jan42.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Muvaffaqiyatli jarayonlar </h5>
+                    <p class="card-text"> Sizning shu davrgacha bo'lgan muvaffaqiyatli jarayonlaringiz</p>
+                    <a href="#" class="btn btn-primary">O'tish</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="/static/images/message.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Xabarlar </h5>
                     <p class="card-text"> Sizning shu davrgacha bo'lgan muvaffaqiyatli jarayonlaringiz</p>
                     <a href="#" class="btn btn-primary">O'tish</a>
                 </div>
@@ -164,7 +167,7 @@
 
 
 </body>
-<!-- include the Bootstrap JavaScript library -->
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

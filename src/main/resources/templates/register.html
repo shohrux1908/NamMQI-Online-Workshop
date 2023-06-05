@@ -5,6 +5,7 @@
 >
 <head>
     <meta charset="UTF-8">
+    <title>[[${pageTitle}]]</title>
     <link rel="stylesheet" type="text/css" href="/static/css/style.css"> <!-- CSS faylni chaqirish -->
 <!--    <script src="/static/js/main.js"></script> &lt;!&ndash; JavaScript faylni chaqirish &ndash;&gt;-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="title">Ro'yxtadan o'tish</div>
+    <div class="title">[[${pageTitle}]]</div>
         <div class="card">
             <div th:if="${param.success}">
                 <div class="alert alert-info">Tabriklaymiz! Siz Muvvaffaqiyatli ro'yxatdan o'tdingiz </div>
@@ -33,35 +34,22 @@
 
                     <div class="input-box">
                         <span class="details">Lavozimi</span>
-                        <input name="position" type="text" placeholder="Lavozimingizni kiriting "   th:field="*{position}" id="position">
+                        <input name="position" type="text" placeholder="Lavozimingizni kiriting "   th:field="*{position}" >
                     </div>
 
                     <div class="input-box">
                         <span class="details">Ism</span>
-                        <input
-                               id="firstName"
-                               name="firstName"
-                               placeholder="Ismingizni kiriting"
-                               th:field="*{firstName}"
+                        <input id="firstName" name="firstName" placeholder="Ismingizni kiriting"  th:field="*{firstName}"
                                type="text"
-                        />
-<!--                        <p th:errors="*{firstName}" class="text-danger"-->
-<!--                           th:if="${#fields.hasErrors('firstName')}">-->
-<!--                        </p>-->
+                        >
+
                     </div>
 
                     <div class="input-box">
                         <span class="details">Familiya </span>
-                        <input
-                               id="lastName"
-                               name="lastName"
-                               placeholder="Familiyangizni kiriting"
-                               th:field="*{lastName}"
+                        <input id="lastName" name="lastName" placeholder="Familiyangizni kiriting" th:field="*{lastName}"
                                type="text"
-                        />
-<!--                        <p th:errors="*{lastName}" class="text-danger"-->
-<!--                           th:if="${#fields.hasErrors('lastName')}">-->
-<!--                        </p>-->
+                        >
                     </div>
                     <div class="input-box">
                         <span class="details">Email</span>

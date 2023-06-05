@@ -45,19 +45,19 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Bosh sahifa</a>
+                <a class="nav-link"th:href="@{/register}">Bosh sahifa</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Xabarlar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Statistikalar</a>
+                <a class="nav-link" >Statistikalar</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Sozlamalar</a>
+                <a class="nav-link" th:href="@{/register}">Register</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Chiqish</a>
+                <a class="nav-link" th:href="@{/logout}">Chiqish</a>
             </li>
         </ul>
     </div>
@@ -67,13 +67,17 @@
     <h1>Xush kelibsiz, Admin!</h1>
     <p>Bu sizning admin sahifangiz. Ushbu sahifa orqali xabarlarni tahrirlashingiz, statistikalarni ko'rishingiz va sozlamalarni o'zgartirishingiz mumkin.</p>
 </div>
+<div class="container my-5" >
+    <a class="h3 center" th:href="@{/users/new}"> Add New User</a>
+</div>
 <div class="container my-5">
     <div class="row">
-        <h1> Registered Users </h1>
+        <h1> Ro'yxatdan O'tkan Foydanalunchilar</h1>
     </div>
-    <table class="table table-dark table-borderless">
-        <thead class="table-dark">
-        <tr class="table-active">
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
             <th>№</th>
             <th>Bo'lim</th>
             <th>Lavozimi</th>
@@ -82,79 +86,67 @@
             <th>Email</th>
             <th>Telefon Raqami</th>
             <th>Login</th>
+            <th>Ariza Mavzusi</th>
+            <th>Ariza Matni</th>
+            <th>Amallar</th>
         </tr>
-
         </thead>
         <tbody>
-        <tr th:each="user: ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.department}"></td>
-            <td th:text="${user.position}"></td>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.phoneNumber}"></td>
-            <td th:text="${user.username}"></td>
-
-<!--                <form th:action="@{/users/delete(id=${user.id})}" >-->
-<!--                    <button class="btn btn-danger" type="submit">Delete</button>-->
-<!--                </form>-->
-<!--            <a href= "/user_message">Message</a>-->
-
-            <td><a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
-
+        <tr class="table-active" th:each="combinedData : ${combinedDataList}">
+            <td th:text="${combinedData.user != null ? combinedData.user.id : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.department : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.position : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.firstName : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.lastName : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.email : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.phoneNumber : ''}"></td>
+            <td th:text="${combinedData.user != null ? combinedData.user.username : ''}"></td>
+            <td th:text="${combinedData.message != null  ?  combinedData.message.theme : ''}"></td>
+            <td th:text="${combinedData.message != null ? combinedData.message.complaintText : ''}"></td>
+            <td><a th:href="@{'/users/edit/'+${combinedData.user != null ? combinedData.user.id : ''}}"class="btn btn-success">Edit</a>
+                <a th:href="@{'/users/delete/'+${combinedData.user != null ? combinedData.user.id : ''}}"class="btn btn-danger">Delete</a>
+            </td>
 
 
         </tr>
-
         </tbody>
-<!--        <thead>-->
-<!--        <tr th:each="message: ${messages}">-->
-<!--            <td th:text="${message.theme}"></td>-->
-<!--            <td th:text="${message.complaintText}"></td>-->
-<!--            <td th:text="${message.positon}"></td>-->
-
-        </thead>
     </table>
-</div>
-<!--<div class="container">-->
-<!--    <div class="row">-->
-<!--        <div class="col-md-4">-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Xabarlarni Tahrirlash</h5>-->
-<!--                    <p class="card-text">Yangi xabarlar qo'shishingiz, mavjud xabarlarni o'zgartirishingiz va o'chirishingiz mumkin.</p>-->
-<!--                    <a href="#" class="btn btn-primary">Batafsil</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-md-4">-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Statistikalar</h5>-->
-<!--                    <p class="card-text">Sahifa statistikalari va foydalanuvchilar haqida ma'lumotlarni ko'rish uchun bu yerga o'ting.</p>-->
-<!--                    <a href="#" class="btn btn-primary">Batafsil</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-md-4">-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Sozlamalar</h5>-->
-<!--                    <p class="card-text">Sahifa sozlamalarini o'zgartirish, tizimni sozlash va boshqa sozlamalar bilan ishlash uchun bu yerga o'ting.</p>-->
-<!--                    <a href="#" class="btn btn-primary">Batafsil</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--            <tr th:each="message: ${messages}">-->
-<!--            <td th:text="${message.id}"></td>-->
-<!--            <td th:text="${message.theme}"></td>-->
-<!--            <td th:text="${message.complaintText}"></td>-->
-<!--            <td th:text="${message.position}"></td>-->
 
-<!--            </tr>-->
+
+
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Xabarlarni Tahrirlash</h5>
+                    <p class="card-text">Yangi xabarlar qo'shishingiz, mavjud xabarlarni o'zgartirishingiz va o'chirishingiz mumkin.</p>
+                    <a href="#" class="btn btn-primary">Batafsil</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Statistikalar</h5>
+                    <p class="card-text">Sahifa statistikalari va foydalanuvchilar haqida ma'lumotlarni ko'rish uchun bu yerga o'ting.</p>
+                    <a href="#" class="btn btn-primary">Batafsil</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sozlamalar</h5>
+                    <p class="card-text">Sahifa sozlamalarini o'zgartirish, tizimni sozlash va boshqa sozlamalar bilan ishlash uchun bu yerga o'ting.</p>
+                    <a href="#" class="btn btn-primary">Batafsil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

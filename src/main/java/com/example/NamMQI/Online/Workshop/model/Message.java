@@ -14,7 +14,7 @@ import lombok.*;
 @Table(name = "complaint")
 public class Message {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @NotBlank
@@ -22,7 +22,7 @@ public class Message {
         private String theme;
 
         @NotBlank
-        @Column(nullable = false)
+        @Column(length = 1000)
         private String complaintText;
 
         @NotBlank

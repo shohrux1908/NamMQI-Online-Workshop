@@ -23,7 +23,9 @@ public class User
 
 
     @Column(nullable=false)
-    private String name;
+    private String firstName;
+    @Column(nullable=false)
+    private String lastName;
 
     @Column(nullable = false)
     private String department;
@@ -53,8 +55,9 @@ public class User
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
     private Collection<Role> roles = new ArrayList<>();
 
-    public User(String name, String department, String position, String email, String phoneNumber, String username, String password, List<Role> roles) {
-        this.name = name;
+    public User(String firstName,String lastName, String department, String position, String email, String phoneNumber, String username, String password, List<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.department = department;
         this.position = position;
         this.email = email;
@@ -64,8 +67,9 @@ public class User
         this.roles = roles;
     }
 
-    public User(String name, String username, String password, List<Role> roles) {
-        this.name = name;
+    public User(String firstName,String lastName, String username, String password, List<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -79,12 +83,20 @@ public class User
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getDepartment() {
@@ -139,12 +151,11 @@ public class User
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
-
-//    @Override
+    //    @Override
 //    public String toString() {
 //        return "User{" +
 //                "id=" + id +
