@@ -76,10 +76,10 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Bosh Menyu <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/home">Bosh Menyu <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Profilim</a>
+                <a class="nav-link" href="/user/info/">Profilim</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Sozlamalar</a>
@@ -103,23 +103,29 @@
             <div class="col-md-10">
                 <div class="card border-dark" style="max-width: 60rem;">
                     <div class="card-body">
-                        <h5 class="card-title">Arizangizni qoldiring:</h5>
+                        <h5 class="card-title text-center">Arizangizni qoldiring:</h5>
                         <div class="input-box">
-                   <form method="post" role="form" th:action="@{/save/message}" th:object="${messages}">
-                            <span class="details">Shikoyatingiz mavzusini kiriting: </span><br>
-                            <input type="text" field="theme" placeholder=" Shikoyat mavzusi kiriting:"   name="theme"/>
-                        <textarea class="form-control"  field="complaintText" type="text" name="complaintText"  id="complaintText" cols="30" rows="10" placeholder="Shikoyatingizni kiriting..." ></textarea>
+                            <form method="post" role="form" th:action="@{/save/message}" th:object="${messages}">
+                                <div class="mb-3">
+                                    <label for="theme" class="form-label">Arizangiz  mavzusini kiriting:</label>
+                                    <input type="text" class="form-control" id="theme" name="theme" placeholder="Ariza mavzusi kiriting">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="complaintText" class="form-label">Arizangiz mazmunini kiriting:</label>
+                                    <textarea class="form-control" id="complaintText" name="complaintText" rows="10" placeholder="Arizangiz mazmunini kiriting..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Bo'limingizi tanlang :</label>
+                                    <select class="form-select" id="position" name="position">
+                                        <option value="RTTM">Raqamli ta'lim texnologiyalar markazi</option>
+                                        <option value="Sanoatni Axborotlashtirish fakulteti">Sanoatni Axborotlashtirish fakulteti</option>
+                                        <option value="ARM">Axborot resurs markazi</option>
+                                    </select>
+                                </div>
+                                <button id="submit-btn" class="btn btn-primary">Yuborish</button>
+                            </form>
 
-                            <select  class="form-select" aria-label="Default select example" type="text" field="position" placeholder="Bo'lim " name="position" >
-                                <option value="RTTM"> Raqamli ta'lim texnologiyalar markazi </option>
-                                <option value="Sanoatni Axborotlashtirish fakulteti"> Sanoatni Axborotlashtirish fakulteti</option>
-                                <option value="ARM">Axborot resurs markazi </option>
-                            </select>
-
-
-                        <button id="submit-btn" class="btn btn-primary">Yuborish</button>
-                   </form>
-                    </div>
+                        </div>
                     </form>
                     </div>
                 </div>
@@ -141,9 +147,13 @@
                     title: 'Arizangiz qabul qilindi!',
                     text: 'Kutib turing, biz tez orada siz bilan bog\'lanamiz.',
                     icon: 'success'
+                }).then(function() {
+                    // Ishga tushuvchi kod
+                    // Bazaga saqlangan ma'lumotlarni ishlab chiqish, qayta yuklash, qayta routing o'tkazish, va hokazo.
                 });
             }
         });
+
     </script>
 
 

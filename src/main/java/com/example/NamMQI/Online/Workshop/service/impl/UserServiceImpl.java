@@ -13,10 +13,8 @@ import com.example.NamMQI.Online.Workshop.service.UserService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,7 +49,7 @@ import java.util.stream.Collectors;
         this.userRepository = userRepository;
         this.userRoleRepository=userRoleRepository;
         this.roleRepository = roleRepository;
-        this.messageRepository=messageRepository;
+        this.messageRepository = messageRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -81,10 +79,10 @@ import java.util.stream.Collectors;
     @Override
     public void saveMessage(MessageDto messageDto) {
 
-        Message message=new Message();
+        Message message =new Message();
         message.setId(messageDto.getId());
         message.setTheme(messageDto.getTheme());
-        message.setComplaintText(messageDto.getComplaintText());
+        message.setComplaint_text(messageDto.getComplaintText());
         message.setPosition(messageDto.getPosition());
         messageRepository.save(message);
     }
@@ -113,7 +111,7 @@ import java.util.stream.Collectors;
 
     @Override
     public List<MessageDto> findAllMessage() {
-        List<Message> messages=messageRepository.findAll();
+        List<Message> messages = messageRepository.findAll();
         return  messages.stream().map((message -> converEntytyMessage(message)))
                 .collect(Collectors.toList());
     }
@@ -175,7 +173,7 @@ import java.util.stream.Collectors;
         MessageDto messageDto=new MessageDto();
         messageDto.setId(message.getId());
         messageDto.setTheme(message.getTheme());
-        messageDto.setComplaintText(message.getComplaintText());
+        messageDto.setComplaintText(message.getComplaint_text());
         messageDto.setPosition(message.getPosition());
         return messageDto;
     }

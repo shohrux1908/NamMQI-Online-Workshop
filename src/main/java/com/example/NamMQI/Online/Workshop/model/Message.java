@@ -23,15 +23,14 @@ public class Message {
 
         @NotBlank
         @Column(length = 1000)
-        private String complaintText;
+        private String complaint_text;
 
         @NotBlank
         @Column(nullable = false)
         private String position;
 
 
-        @Column(name = "user_id")
-        private Long user;
+
 
 
 }

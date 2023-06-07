@@ -3,7 +3,6 @@ package com.example.NamMQI.Online.Workshop.controller;
 import com.example.NamMQI.Online.Workshop.dto.CombinedData;
 import com.example.NamMQI.Online.Workshop.dto.MessageDto;
 import com.example.NamMQI.Online.Workshop.dto.UserDto;
-import com.example.NamMQI.Online.Workshop.model.Message;
 import com.example.NamMQI.Online.Workshop.model.Role;
 import com.example.NamMQI.Online.Workshop.model.User;
 import com.example.NamMQI.Online.Workshop.repository.MessageRepository;
@@ -13,7 +12,6 @@ import com.example.NamMQI.Online.Workshop.repository.UserRoleRepository;
 import com.example.NamMQI.Online.Workshop.service.UserService;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -33,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Controller
 public class AuthController {
 
@@ -52,6 +48,10 @@ public class AuthController {
     @Autowired
     UserServiceImpl userServiceImpl;
      private  final MessageRepository messageRepository;
+
+
+
+
 
     @GetMapping("/login")
     public String login() {
@@ -79,10 +79,11 @@ public class AuthController {
 
 
 
-
+@Autowired
     public AuthController(UserService userService, MessageRepository messageRepository) {
         this.userService = userService;
         this.messageRepository = messageRepository;
+
     }
 
 
@@ -171,6 +172,16 @@ public class AuthController {
         model.addAttribute("messages", messageDto);
         return "apply_page";
     }
+    @GetMapping("/succes/action")
+    public  String success( Model model){
+        return "success_action";
+    }
+
+    @GetMapping("/messages")
+    public  String message( Model model){
+        return "messages";
+    }
+
     @PostMapping("/save/message")
     public String savemessage(@ModelAttribute() MessageDto messages,
                                     BindingResult result,
@@ -179,6 +190,11 @@ public class AuthController {
         userService.saveMessage(messages);
         return "apply_page";
     }
+//    @PostMapping("/user/send-ticket")
+//    public String sendTicket(@ModelAttribute("user") User user, @ModelAttribute("ticket") Ticket ticket) {
+//        messageRepository.sendTicket(user, ticket);
+//        return "redirect:/user/" + user.getId();
+//    }
 
 
 
